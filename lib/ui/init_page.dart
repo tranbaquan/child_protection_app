@@ -15,15 +15,13 @@ class InitPageState extends State<InitPage> {
   Widget build(BuildContext context) {
     final appbar = HWAppbar(title: "Child Protect");
     final parentsBtn = HWButton(
-      title: "Parent",
-      minWidth: 150,
-      color: Colors.green,
+      title: "Cha mẹ",
+      color: Color(0xff5ac8fa),
       onPressed: () {},
     );
     final childBtn = HWButton(
-      title: "Child",
-      minWidth: 150,
-      color: Colors.amber,
+      title: "Trẻ em",
+      color: Color(0xffffcc00),
       onPressed: () {},
     );
     return Scaffold(
@@ -38,7 +36,7 @@ class InitPageState extends State<InitPage> {
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Text(
-                  'Choose Role',
+                  'Bạn là...?',
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -53,14 +51,23 @@ class InitPageState extends State<InitPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-
+                      Image.asset(
+                        'images/img-parents.png',
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        'images/img-child.png',
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      childBtn,
                       parentsBtn,
+                      childBtn,
                     ],
                   ),
                 ],

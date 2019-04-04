@@ -68,7 +68,7 @@ class HWButton extends StatelessWidget {
   const HWButton(
       {Key key,
       this.title,
-      this.minWidth = 0,
+      this.minWidth=0,
       this.height = 40,
       this.onPressed,
       this.color})

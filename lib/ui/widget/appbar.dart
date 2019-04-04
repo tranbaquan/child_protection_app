@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-class HWAppbar{
+class HWAppbar {
   final String title;
 
   const HWAppbar({this.title});
-
 
   PreferredSize buildAppbar(BuildContext context) {
     return PreferredSize(
@@ -28,7 +27,12 @@ class HWAppbar{
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Text(this.title),
+          title: Text(
+            this.title,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           centerTitle: true,
         ),
       ),

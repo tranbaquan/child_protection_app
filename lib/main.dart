@@ -1,8 +1,11 @@
 import 'package:child_protection_app/ui/init_page.dart';
+import 'package:child_protection_app/ui/parent_form.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(ChildProtection());
+//  runApp(Parent());
+//  runApp(InitPage());
 }
 
 class ChildProtection extends StatelessWidget {

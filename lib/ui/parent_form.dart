@@ -1,9 +1,14 @@
+import 'package:child_protection_app/ui/enter_code.dart';
 import 'package:child_protection_app/ui/widget/appbar.dart';
 import 'package:child_protection_app/ui/widget/button.dart';
 import 'package:child_protection_app/ui/widget/input_text.dart';
 import 'package:flutter/material.dart';
 
 class Parent extends StatefulWidget {
+  final String role;
+
+  const Parent({Key key, this.role}) : super(key: key);
+
   @override
   ParentState createState() {
     return new ParentState();
@@ -15,30 +20,53 @@ class ParentState extends State<Parent> {
   Widget build(BuildContext context) {
     final appbar = HWAppbar(title: "Child Protect");
     final sendBtn = RaisedGradientRoundedButton(
-      title: "Accept",
+      title: "Tiếp tục",
       minWidth: 150,
-      onPressed: () {},
-    );
-    final inputText = HWInputText(
-      icon: Icon(
-        Icons.toys,
-        color: Colors.grey,
-      ),
-      hintText: "ACCOUNT",
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HWEnterCode()),
+        );
+      },
     );
     final inputName = HWInputText(
       icon: Icon(
-        Icons.toys,
+        Icons.person_pin,
         color: Colors.grey,
       ),
-      hintText: "name",
+      hintText: widget.role == "PARENTS" ? "Tên của bố/mẹ" : "Tên của con",
     );
     final inputPhone = HWInputText(
       icon: Icon(
-        Icons.toys,
+        Icons.phone_android,
         color: Colors.grey,
       ),
-      hintText: "phone",
+      hintText: "Số điện thoại",
+      textInputType: TextInputType.number,
+    );
+    final inputPwd = HWInputText(
+      icon: Icon(
+        Icons.vpn_key,
+        color: Colors.grey,
+      ),
+      hintText: "mật khẩu",
+      isPassword: true,
+    );
+    final inputEmail = HWInputText(
+      icon: Icon(
+        Icons.mail,
+        color: Colors.grey,
+      ),
+      hintText: "Email",
+      textInputType: TextInputType.emailAddress,
+    );
+    final inputDoB = HWInputText(
+      icon: Icon(
+        Icons.calendar_today,
+        color: Colors.grey,
+      ),
+      hintText: "Ngày sinh",
+      textInputType: TextInputType.datetime,
     );
     return Scaffold(
       appBar: appbar.buildAppbar(context),
@@ -50,7 +78,7 @@ class ParentState extends State<Parent> {
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Text(
-                  'Choose Role',
+                  'Nhập thông tin cá nhân',
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -62,11 +90,17 @@ class ParentState extends State<Parent> {
               ),
               inputName,
               inputPhone,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  sendBtn,
-                ],
+              inputDoB,
+              widget.role == "PARENTS" ? inputEmail : Container(),
+              widget.role == "PARENTS" ? inputPwd : Container(),
+              Container(
+                margin: EdgeInsets.only(top: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    sendBtn,
+                  ],
+                ),
               ),
             ],
           ),

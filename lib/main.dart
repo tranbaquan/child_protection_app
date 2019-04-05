@@ -1,6 +1,7 @@
 import 'package:child_protection_app/ui/enter_code.dart';
 import 'package:child_protection_app/ui/init_page.dart';
-import 'package:child_protection_app/ui/parent_form.dart';
+import 'package:child_protection_app/ui/info_page.dart';
+import 'package:child_protection_app/ui/parents/zone_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class ChildProtection extends StatelessWidget {
         backgroundColor: Colors.white,
         accentColor: Colors.cyan,
       ),
-      home: InitPage(),
+      home: ZonePage(),
     );
   }
 }

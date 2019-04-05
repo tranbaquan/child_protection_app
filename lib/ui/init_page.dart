@@ -1,4 +1,4 @@
-import 'package:child_protection_app/ui/parent_form.dart';
+import 'package:child_protection_app/ui/info_page.dart';
 import 'package:child_protection_app/ui/widget/appbar.dart';
 import 'package:child_protection_app/ui/widget/button.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class InitPageState extends State<InitPage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Parent(role: 'PARENTS',)),
+          MaterialPageRoute(builder: (context) => InfoPage(role: 'PARENTS',)),
         );
       },
     );
@@ -30,7 +30,7 @@ class InitPageState extends State<InitPage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Parent(role: 'CHILD',)),
+          MaterialPageRoute(builder: (context) => InfoPage(role: 'CHILD',)),
         );
       },
     );

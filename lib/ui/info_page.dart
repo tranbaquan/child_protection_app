@@ -4,18 +4,18 @@ import 'package:child_protection_app/ui/widget/button.dart';
 import 'package:child_protection_app/ui/widget/input_text.dart';
 import 'package:flutter/material.dart';
 
-class Parent extends StatefulWidget {
+class InfoPage extends StatefulWidget {
   final String role;
 
-  const Parent({Key key, this.role}) : super(key: key);
+  const InfoPage({Key key, this.role}) : super(key: key);
 
   @override
-  ParentState createState() {
-    return new ParentState();
+  InfoPageState createState() {
+    return new InfoPageState();
   }
 }
 
-class ParentState extends State<Parent> {
+class InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     final appbar = HWAppbar(title: "Child Protect");

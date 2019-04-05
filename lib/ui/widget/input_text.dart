@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 class HWInputText extends StatelessWidget {
   final Icon icon;
   final String hintText;
+  final TextInputType textInputType;
+  final bool isPassword;
 
-  const HWInputText({Key key, this.icon, this.hintText}) : super(key: key);
+  const HWInputText({Key key, this.icon, this.hintText, this.textInputType = TextInputType.text, this.isPassword = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget inputText = Container(
       margin: EdgeInsets.symmetric(
-        vertical: 8,
+        vertical: 6,
         horizontal: 32,
       ),
       decoration: BoxDecoration(
@@ -46,6 +48,8 @@ class HWInputText extends StatelessWidget {
                   ),
                   border: InputBorder.none,
                 ),
+                keyboardType: this.textInputType,
+                obscureText: this.isPassword,
               ),
             ),
           ),

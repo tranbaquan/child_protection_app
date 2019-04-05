@@ -1,3 +1,4 @@
+import 'package:child_protection_app/ui/enter_code.dart';
 import 'package:child_protection_app/ui/init_page.dart';
 import 'package:child_protection_app/ui/info_page.dart';
 import 'package:child_protection_app/ui/parents/zone_page.dart';
@@ -12,6 +13,7 @@ class ChildProtection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Child Protection',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
         backgroundColor: Colors.white,

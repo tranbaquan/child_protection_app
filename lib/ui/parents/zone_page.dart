@@ -14,6 +14,7 @@ class ZonePage extends StatefulWidget {
 
 class ZonePageState extends State<ZonePage> {
   Completer<GoogleMapController> _controller = Completer();
+  static const LatLng _center = const LatLng(45.521563, -122.677433);
 //  LocationData currentLocation;
 //  Location location = Location();
 
@@ -27,23 +28,12 @@ class ZonePageState extends State<ZonePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HWAppbar(title: "Google Maps").buildAppbar(context),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: GoogleMap(
-//        mapType: MapType.hybrid,
-//        onMapCreated: _onMapCreated,
-
-          initialCameraPosition: CameraPosition(
-//          target: LatLng(currentLocation.latitude, currentLocation.longitude),
-            target: LatLng(37.42796133580664, -122.085749655962),
-            zoom: 14.4746,
-          ),
+      body: GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: _center,
+          zoom: 11.0,
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){},
-        icon: Icon(Icons.directions_boat),
       ),
     );
   }

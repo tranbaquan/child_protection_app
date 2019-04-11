@@ -20,7 +20,7 @@ class ChildProtection extends StatelessWidget {
         backgroundColor: Colors.white,
         accentColor: Colors.cyan,
       ),
-      home: ManageChild(),
+      home: InitPage(),
     );
   }
 }

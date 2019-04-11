@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+
 class HWInputText extends StatelessWidget {
   final Icon icon;
   final String hintText;
   final TextInputType textInputType;
   final bool isPassword;
+  final TextEditingController controller;
 
-  const HWInputText({Key key, this.icon, this.hintText, this.textInputType = TextInputType.text, this.isPassword = false}) : super(key: key);
+  const HWInputText({Key key, this.icon, this.hintText, this.textInputType = TextInputType.text, this.isPassword = false, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class HWInputText extends StatelessWidget {
                 color: Color.fromARGB(5, 0, 0, 0 ),
               ),
               child: TextFormField(
+                controller: controller,
                 decoration: InputDecoration(
                   hintText: this.hintText,
                   hintStyle: TextStyle(

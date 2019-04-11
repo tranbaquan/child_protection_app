@@ -15,6 +15,7 @@ class ZonePage extends StatefulWidget {
 class ZonePageState extends State<ZonePage> {
   Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = const LatLng(45.521563, -122.677433);
+  MapType _currentMapType = MapType.normal;
 //  LocationData currentLocation;
 //  Location location = Location();
 
@@ -30,6 +31,12 @@ class ZonePageState extends State<ZonePage> {
       appBar: HWAppbar(title: "Google Maps").buildAppbar(context),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
+        myLocationEnabled: true,
+        rotateGesturesEnabled: true,
+        scrollGesturesEnabled: true,
+        tiltGesturesEnabled: true,
+        zoomGesturesEnabled: true,
+        mapType: _currentMapType,
         initialCameraPosition: CameraPosition(
           target: _center,
           zoom: 11.0,

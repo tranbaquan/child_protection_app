@@ -14,12 +14,12 @@ class ZonePage extends StatefulWidget {
 
 class ZonePageState extends State<ZonePage> {
   Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController controller;
   Location location = new Location();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  LocationData currentLocation;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  LatLng latLng;
+  final Set<Marker> _markers = Set();
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +29,45 @@ class ZonePageState extends State<ZonePage> {
         future: _getLocation(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-          return GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target:
-                  LatLng(snapshot.data.latitude, snapshot.data.longitude),
-              zoom: 22.0,
-            ),
-          );
+            return Stack(
+              children: <Widget>[
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  myLocationEnabled: true,
+                  initialCameraPosition: CameraPosition(
+                    target: latLng,
+                    zoom: 20,
+                  ),
+                  onCameraMove: (CameraPosition position) {
+                    setState(() {
+                      controller.animateCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(
+                            target: position.target,
+                            zoom: 20,
+                          ),
+                        ),
+                      );
+                      latLng = position.target;
+                    });
+                  },
+                  markers: _markers,
+                ),
+                SizedBox(height: 16.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton(
+                      onPressed: _onAddMarkerButtonPressed,
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: Colors.green,
+                      child: const Icon(Icons.add_location, size: 36.0),
+                    ),
+                  ),
+                ),
+              ],
+            );
           } else {
             return Container();
           }
@@ -45,36 +76,29 @@ class ZonePageState extends State<ZonePage> {
     );
   }
 
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      appBar: HWAppbar(title: "Google Maps").buildAppbar(context),
-//      body: GoogleMap(
-//        onMapCreated: _onMapCreated,
-//
-//        initialCameraPosition: CameraPosition(
-//          target: _center,
-//          zoom: 22.0,
-//        ),
-//        myLocationEnabled: true,
-//        scrollGesturesEnabled: true,
-//        tiltGesturesEnabled: true,
-//        mapType: MapType.normal,
-//        zoomGesturesEnabled: true,
-//      ),
-//    );}
-
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+  void _onAddMarkerButtonPressed() {
+    setState(() {
+      _markers.add(Marker(
+        // This marker id can be anything that uniquely identifies each marker.
+        markerId: MarkerId(latLng.toString()),
+        position: latLng,
+        infoWindow: InfoWindow(
+          title: 'Really cool place',
+          snippet: '5 Star Rating',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
   }
 
-  Future<LocationData> _getLocation() async {
-    LocationData currentLocation;
-    try {
-      currentLocation = (await location.getLocation());
-    } catch (e) {
-      currentLocation = null;
-    }
-    return currentLocation;
+  void _onMapCreated(GoogleMapController controller) {
+    this.controller = controller;
+    _controller.complete(this.controller);
+  }
+
+  Future<LatLng> _getLocation() async {
+    currentLocation = await location.getLocation();
+    latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
+    return latLng;
   }
 }

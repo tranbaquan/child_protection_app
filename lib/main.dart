@@ -1,7 +1,7 @@
 import 'package:child_protection_app/ui/enter_code.dart';
 import 'package:child_protection_app/ui/init_page.dart';
 import 'package:child_protection_app/ui/info_page.dart';
-import 'package:child_protection_app/ui/management/manage_child.dart';
+import 'package:child_protection_app/ui/parents/manage_child.dart';
 import 'package:child_protection_app/ui/parents/zone_page.dart';
 import 'package:flutter/material.dart';
 

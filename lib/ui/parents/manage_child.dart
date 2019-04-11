@@ -1,35 +1,23 @@
+import 'package:child_protection_app/hosting.dart';
+import 'package:child_protection_app/ui/children/child.dart';
 import 'package:child_protection_app/ui/model/zone.dart';
 import 'package:child_protection_app/ui/widget/appbar.dart';
 import 'package:child_protection_app/ui/widget/button.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class ManageChild extends StatefulWidget {
-  List<Zone> l = [
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-    Zone('avc', 123, 123),
-  ];
+  final String phone;
+
+  const ManageChild({Key key, this.phone}) : super(key: key);
 
   @override
-  _ManageChildState createState() => _ManageChildState(l);
+  _ManageChildState createState() => _ManageChildState();
 }
 
 class _ManageChildState extends State<ManageChild> {
-//  final name = "Con ông cháu cha";
-  final List<Zone> listZone;
-
-  _ManageChildState(this.listZone);
+  List<Zone> zones = List<Zone>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +31,18 @@ class _ManageChildState extends State<ManageChild> {
 //      );
       },
     );
-    // TODO: implement build
     return Scaffold(
       appBar: HWAppbar(title: "Manage Protect Zone ").buildAppbar(context),
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
-//        padding: EdgeInsets.all(0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Text(
-                  'Con ông cháu cha',
+                  'Con của bạn',
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -72,8 +58,9 @@ class _ManageChildState extends State<ManageChild> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: addLocal),
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: addLocal,
+                  ),
                 ],
               ),
               Text('Danh sách vùng an toàn'),
@@ -81,7 +68,7 @@ class _ManageChildState extends State<ManageChild> {
                 margin: EdgeInsets.only(top: 16),
                 height: 330,
                 child: ListView.builder(
-                    itemBuilder: _listBuilder, itemCount: listZone.length),
+                    itemBuilder: _listBuilder, itemCount: zones.length),
               ),
             ],
           ),
@@ -99,7 +86,7 @@ class _ManageChildState extends State<ManageChild> {
         children: <Widget>[
           Expanded(
             child: Text(
-              listZone[index].name,
+              zones[index].name,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.green,
@@ -116,5 +103,37 @@ class _ManageChildState extends State<ManageChild> {
         ],
       ),
     );
+  }
+
+  Future<List<Zone>> getSafeZone() async {
+    String url = Host.server + Host.parents + Host.safe;
+    Child child = await getChild();
+    var response = await http.get(url, headers: {"childId": child.id});
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+      List<Zone> zones = List<Zone>();
+      for (var s in data) {
+        zones.add(Zone(s.name, s.latitude, s.longitude));
+      }
+      setState(() {
+        this.zones = zones;
+      });
+      return zones;
+    } else {
+      print('${response.statusCode}');
+    }
+    return null;
+  }
+
+  Future<Child> getChild() async {
+    String url = Host.server + Host.child;
+    var response = await http.get(url, headers: {"phone": widget.phone});
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+      Child child = Child(data.name, data.phone, data.role);
+      child.id = data._id;
+      return child;
+    }
+    return null;
   }
 }

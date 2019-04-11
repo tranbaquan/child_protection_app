@@ -1,4 +1,5 @@
 import 'package:child_protection_app/hosting.dart';
+import 'package:child_protection_app/ui/children/child.dart';
 import 'package:child_protection_app/ui/enter_code.dart';
 import 'package:child_protection_app/ui/parents/parents.dart';
 import 'package:child_protection_app/ui/widget/appbar.dart';
@@ -7,6 +8,7 @@ import 'package:child_protection_app/ui/widget/input_text.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InfoPage extends StatefulWidget {
   final String role;
@@ -33,11 +35,19 @@ class InfoPageState extends State<InfoPage> {
       title: "Tiếp tục",
       minWidth: 150,
       onPressed: () {
-        createParentsInfo();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HWEnterCode()),
-        );
+        if (widget.role == 'PARENTS') {
+          createParentsInfo();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HWEnterCode()),
+          );
+        } else {
+          createChildInfo();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HWEnterCode()),
+          );
+        }
       },
     );
     final inputName = HWInputText(
@@ -130,13 +140,23 @@ class InfoPageState extends State<InfoPage> {
       Parents parents = Parents(_nameController.text, _phoneController.text,
           _emailController.text, _passController.text, widget.role);
       Map<String, dynamic> data = {
-        'name': parents.name
+        'name': parents.name,
+        'phone': parents.phone,
+        'email': parents.email,
+        'password': parents.password,
+        'role': parents.role
       };
-      String url = Host.SERVER + Host.PARENTS;
+      String url = Host.server + Host.parents;
 
-      var response = await http.Client().post(url, headers: {"Content-Type": "application/json"}, body: convert.jsonEncode(data));
+      var response = await http.post(url,
+          headers: {"Content-Type": "application/json"},
+          body: convert.jsonEncode(data));
       if (response.statusCode == 200) {
-//        parents = convert.jsonDecode(response.body);
+        final data = convert.jsonDecode(response.body);
+        parents = Parents(data.name, data.phone, data.email, data.password, 'PARENTS');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('id', data._id);
+        prefs.setString('ROLE', 'PARENTS');
         print(response.body);
         return parents;
       } else {
@@ -144,5 +164,31 @@ class InfoPageState extends State<InfoPage> {
       }
     }
     return null;
+  }
+
+  Future<Child> createChildInfo() async {
+    Child child =
+        Child(_nameController.text, _phoneController.text, widget.role);
+    Map<String, dynamic> data = {
+      'name': child.name,
+      'phone': child.phone,
+      'role': child.role
+    };
+    String url = Host.server + Host.child;
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: convert.jsonEncode(data));
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+      print(response.body);
+      child = Child(data.name, data.phone, 'CHILD');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('id', data._id);
+      prefs.setString('ROLE', 'CHILD');
+      return child;
+    } else {
+      print("${response.statusCode}");
+    }
+    return child;
   }
 }

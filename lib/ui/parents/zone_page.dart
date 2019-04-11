@@ -15,6 +15,7 @@ class ZonePage extends StatefulWidget {
 class ZonePageState extends State<ZonePage> {
   Completer<GoogleMapController> _controller = Completer();
   Location location = new Location();
+  GoogleMapController mapController;
 
   @override
   void initState() {
@@ -30,6 +31,11 @@ class ZonePageState extends State<ZonePage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
           return GoogleMap(
+            myLocationEnabled: true,
+            rotateGesturesEnabled: true,
+            scrollGesturesEnabled: true,
+            tiltGesturesEnabled: true,
+            zoomGesturesEnabled: true,
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target:
@@ -44,25 +50,6 @@ class ZonePageState extends State<ZonePage> {
       ),
     );
   }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      appBar: HWAppbar(title: "Google Maps").buildAppbar(context),
-//      body: GoogleMap(
-//        onMapCreated: _onMapCreated,
-//
-//        initialCameraPosition: CameraPosition(
-//          target: _center,
-//          zoom: 22.0,
-//        ),
-//        myLocationEnabled: true,
-//        scrollGesturesEnabled: true,
-//        tiltGesturesEnabled: true,
-//        mapType: MapType.normal,
-//        zoomGesturesEnabled: true,
-//      ),
-//    );}
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);

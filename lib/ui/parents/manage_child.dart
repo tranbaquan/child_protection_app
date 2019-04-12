@@ -1,6 +1,7 @@
 import 'package:child_protection_app/hosting.dart';
 import 'package:child_protection_app/ui/children/child.dart';
 import 'package:child_protection_app/ui/model/zone.dart';
+import 'package:child_protection_app/ui/parents/zone_page.dart';
 import 'package:child_protection_app/ui/widget/appbar.dart';
 import 'package:child_protection_app/ui/widget/button.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +26,14 @@ class _ManageChildState extends State<ManageChild> {
       title: "Thêm vị trí",
       color: Color(0xff5ac8fa),
       onPressed: () {
-//      Navigator.push(
-//        context,
-//        MaterialPageRoute(builder: (context) => InfoPage(role: 'PARENTS',)),
-//      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ZonePage()),
+      );
       },
     );
     return Scaffold(
-      appBar: HWAppbar(title: "Manage Protect Zone ").buildAppbar(context),
+      appBar: HWAppbar(title: "Manage Protect Zone").buildAppbar(context),
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,

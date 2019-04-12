@@ -53,7 +53,7 @@ class ZonePageState extends State<ZonePage> {
                   },
                   markers: _markers,
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 48.0),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Align(
@@ -83,8 +83,7 @@ class ZonePageState extends State<ZonePage> {
         markerId: MarkerId(latLng.toString()),
         position: latLng,
         infoWindow: InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
+          title: 'Safe Zone',
         ),
         icon: BitmapDescriptor.defaultMarker,
       ));

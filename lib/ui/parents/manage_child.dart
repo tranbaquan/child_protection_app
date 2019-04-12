@@ -18,7 +18,7 @@ class ManageChild extends StatefulWidget {
 }
 
 class _ManageChildState extends State<ManageChild> {
-  List<Zone> zones = List<Zone>();
+  List<SafeZone> zones = List<SafeZone>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +79,7 @@ class _ManageChildState extends State<ManageChild> {
   }
 
   Widget _listBuilder(BuildContext context, int index) {
+    getSafeZone();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
       child: Row(
@@ -106,15 +107,15 @@ class _ManageChildState extends State<ManageChild> {
     );
   }
 
-  Future<List<Zone>> getSafeZone() async {
-    String url = Host.server + Host.parents + Host.safe;
+  Future<List<SafeZone>> getSafeZone() async {
     Child child = await getChild();
-    var response = await http.get(url, headers: {"childId": child.id});
+    String url = Host.server + Host.parents + Host.safe + '?childId=' + child.id;
+    var response = await http.get(url);
     if (response.statusCode == 200) {
       final data = convert.jsonDecode(response.body);
-      List<Zone> zones = List<Zone>();
+      List<SafeZone> zones = List<SafeZone>();
       for (var s in data) {
-        zones.add(Zone(s.name, s.latitude, s.longitude));
+        zones.add(SafeZone(s['name'], s['latitude'], s['longitude'], s['_id']));
       }
       setState(() {
         this.zones = zones;

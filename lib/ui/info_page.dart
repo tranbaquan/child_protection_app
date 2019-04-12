@@ -1,5 +1,6 @@
 import 'package:child_protection_app/hosting.dart';
 import 'package:child_protection_app/ui/children/child.dart';
+import 'package:child_protection_app/ui/children/child_zone_page.dart';
 import 'package:child_protection_app/ui/enter_code.dart';
 import 'package:child_protection_app/ui/parents/parents.dart';
 import 'package:child_protection_app/ui/widget/appbar.dart';
@@ -45,7 +46,7 @@ class InfoPageState extends State<InfoPage> {
           createChildInfo();
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HWEnterCode()),
+            MaterialPageRoute(builder: (context) => ChildZonePage()),
           );
         }
       },
@@ -153,9 +154,9 @@ class InfoPageState extends State<InfoPage> {
           body: convert.jsonEncode(data));
       if (response.statusCode == 200) {
         final data = convert.jsonDecode(response.body);
-        parents = Parents(data.name, data.phone, data.email, data.password, 'PARENTS');
+        parents = Parents(data['name'], data['phone'], data['email'], data['password'], 'PARENTS');
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('id', data._id);
+        prefs.setString('id', data['_id']);
         prefs.setString('ROLE', 'PARENTS');
         print(response.body);
         return parents;
@@ -181,9 +182,9 @@ class InfoPageState extends State<InfoPage> {
     if (response.statusCode == 200) {
       final data = convert.jsonDecode(response.body);
       print(response.body);
-      child = Child(data.name, data.phone, 'CHILD');
+      child = Child(data['name'], data['phone'], 'CHILD');
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('id', data._id);
+      prefs.setString('id', data['_id']);
       prefs.setString('ROLE', 'CHILD');
       return child;
     } else {

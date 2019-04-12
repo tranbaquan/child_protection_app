@@ -64,19 +64,24 @@ class HWEnterCode extends StatelessWidget {
     String url = Host.server + Host.parents + Host.link;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String id = prefs.getString('id');
+    print(id);
     String phone = _phoneController.text;
+    print(phone);
+    url = url + '?parentId=' + id + '&childPhone=' + phone;
+    prefs.setString('phone', phone);
     var response = await http.put(
       url,
       headers: {
         "Content-Type": "application/json",
-        "parentId": id,
-        "childPhone": phone
       },
     );
 
     if (response.statusCode == 200) {
       final data = convert.jsonDecode(response.body);
       print(data);
+    }else {
+      print('${response.statusCode}');
     }
+
   }
 }
